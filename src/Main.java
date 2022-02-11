@@ -6,8 +6,5 @@ public class Main {
         Connector.connect();
 
 
-        Connector.createNewTable();
-
-
     }
 }
