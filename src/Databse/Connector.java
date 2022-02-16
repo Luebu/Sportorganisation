@@ -32,16 +32,12 @@ public class Connector {
     }
 
 
-    public static void createNewTable() {
+    public static void sqlCommand(String sql) {
         // SQLite connection string
         String url = "jdbc:sqlite:"+pathdb;
 
         // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS warehouses (\n"
-                + "	id integer PRIMARY KEY,\n"
-                + "	name text NOT NULL,\n"
-                + "	capacity real\n"
-                + ");";
+
 
         try (Connection conn = DriverManager.getConnection(url);
              Statement stmt = conn.createStatement()) {
