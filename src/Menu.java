@@ -16,6 +16,7 @@ public class Menu extends JFrame {
     public Menu() {
         super();
         setVisible(true);
+        setSize(500, 500);
         add(root);
 
         buttonpanel1.addActionListener(new ActionListener() {
@@ -74,5 +75,4 @@ public class Menu extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return root;
     }
-
 }
