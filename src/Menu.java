@@ -13,6 +13,7 @@ public class Menu extends JFrame {
     private JButton buttonpanel1;
     private JButton buttonpanel2;
 
+
     public Menu() {
         super();
         setVisible(true);
@@ -59,6 +60,8 @@ public class Menu extends JFrame {
         panel1.setLayout(new CardLayout(0, 0));
         root.add(panel1, "Card1");
         buttonpanel1 = new JButton();
+        buttonpanel1.setMaximumSize(new Dimension(106, 30));
+        buttonpanel1.setMinimumSize(new Dimension(106, 30));
         buttonpanel1.setText("Panel1Button");
         panel1.add(buttonpanel1, "Card1");
         panel2 = new JPanel();
@@ -75,4 +78,5 @@ public class Menu extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return root;
     }
+
 }

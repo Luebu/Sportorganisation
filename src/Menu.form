@@ -19,6 +19,8 @@
               <card name="Card1"/>
             </constraints>
             <properties>
+              <maximumSize width="106" height="30"/>
+              <minimumSize width="106" height="30"/>
               <text value="Panel1Button"/>
             </properties>
           </component>
