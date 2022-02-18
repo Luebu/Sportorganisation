@@ -1,6 +1,3 @@
-import eu.cr4zyfl1x.logger.LogType;
-import eu.cr4zyfl1x.logger.Logger;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,33 +5,29 @@ import java.awt.event.ActionListener;
 
 public class Menu extends JFrame {
     private JPanel root;
+    private JButton button1Button;
+    private JButton button2Button;
     private JPanel panel1;
     private JPanel panel2;
-    private JButton buttonpanel1;
-    private JButton buttonpanel2;
-
 
     public Menu() {
         super();
-        setVisible(true);
-        setSize(500, 500);
-        add(root);
-
-        buttonpanel1.addActionListener(new ActionListener() {
+        root.setVisible(true);
+        panel2.setVisible(false);
+        panel1.setVisible(true);
+        
+        button1Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 panel1.setVisible(false);
                 panel2.setVisible(true);
-                Logger.log(LogType.SYSTEM, "Button 1 clicked");
             }
-
         });
-        buttonpanel2.addActionListener(new ActionListener() {
+        button2Button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panel1.setVisible(true);
                 panel2.setVisible(false);
-                Logger.log(LogType.SYSTEM, "Button 2 clicked");
+                panel1.setVisible(true);
             }
         });
     }
@@ -55,21 +48,19 @@ public class Menu extends JFrame {
      */
     private void $$$setupUI$$$() {
         root = new JPanel();
-        root.setLayout(new CardLayout(0, 0));
+        root.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel1 = new JPanel();
-        panel1.setLayout(new CardLayout(0, 0));
-        root.add(panel1, "Card1");
-        buttonpanel1 = new JButton();
-        buttonpanel1.setMaximumSize(new Dimension(106, 30));
-        buttonpanel1.setMinimumSize(new Dimension(106, 30));
-        buttonpanel1.setText("Panel1Button");
-        panel1.add(buttonpanel1, "Card1");
+        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        root.add(panel1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        button1Button = new JButton();
+        button1Button.setText("Button1");
+        panel1.add(button1Button, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel2 = new JPanel();
-        panel2.setLayout(new CardLayout(0, 0));
-        root.add(panel2, "Card2");
-        buttonpanel2 = new JButton();
-        buttonpanel2.setText("Panel2Button");
-        panel2.add(buttonpanel2, "Card1");
+        panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        root.add(panel2, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        button2Button = new JButton();
+        button2Button.setText("Button2");
+        panel2.add(button2Button, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
@@ -78,5 +69,4 @@ public class Menu extends JFrame {
     public JComponent $$$getRootComponent$$$() {
         return root;
     }
-
 }

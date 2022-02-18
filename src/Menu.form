@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="Menu">
-  <grid id="27dc6" binding="root" layout-manager="CardLayout" hgap="0" vgap="0">
+  <grid id="27dc6" binding="root" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
       <xy x="20" y="20" width="500" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
     <children>
-      <grid id="f56d7" binding="panel1" layout-manager="CardLayout" hgap="0" vgap="0">
+      <grid id="4fe53" binding="panel1" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <card name="Card1"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="3e31b" class="javax.swing.JButton" binding="buttonpanel1">
+          <component id="5f400" class="javax.swing.JButton" binding="button1Button" default-binding="true">
             <constraints>
-              <card name="Card1"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <maximumSize width="106" height="30"/>
-              <minimumSize width="106" height="30"/>
-              <text value="Panel1Button"/>
+              <text value="Button1"/>
             </properties>
           </component>
         </children>
       </grid>
-      <grid id="b6ef6" binding="panel2" layout-manager="CardLayout" hgap="0" vgap="0">
+      <grid id="52a65" binding="panel2" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+        <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
-          <card name="Card2"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="7f69d" class="javax.swing.JButton" binding="buttonpanel2">
+          <component id="ed8a4" class="javax.swing.JButton" binding="button2Button" default-binding="true">
             <constraints>
-              <card name="Card1"/>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="Panel2Button"/>
+              <text value="Button2"/>
             </properties>
           </component>
         </children>
