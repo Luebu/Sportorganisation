@@ -10,8 +10,6 @@ public class Main {
     public static void main(String[] args){
         System.out.println("HhhhEyy");
         Connector.connect();
-        JFrame frame = new Menu();
-        frame.setVisible(true);
         initialzeLogger();
         Connector.sqlCommand("CREATE TABLE IF NOT EXISTS halle " +
                 "(HalleID int auto_increment primary Key Not null, " +
