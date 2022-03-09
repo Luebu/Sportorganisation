@@ -6,10 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connector {
-
+private static Connection conn;
     static String pathdb = "src/Database";
     public static void connect() {
-        Connection conn = null;
         try {
             // db parameters
             String url = "jdbc:sqlite:"+pathdb;
@@ -20,14 +19,6 @@ public class Connector {
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
     }
 
@@ -46,5 +37,9 @@ public class Connector {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static Connection getConn() {
+        return conn;
     }
 }
