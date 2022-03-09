@@ -11,14 +11,7 @@ public class Main {
         System.out.println("HhhhEyy");
         Connector.connect();
         initialzeLogger();
-        Connector.sqlCommand("CREATE TABLE IF NOT EXISTS halle " +
-                "(HalleID int auto_increment primary Key Not null, " +
-                "Hallenname String,  " +
-                "Ort String, " +
-                "Straße String, " +
-                "Platz_Insgesamt int, " +
-                "Freier_Platz int, " +
-                "Vergebener_Platz int)");
+
 
     }
     private static void initialzeLogger(){
