@@ -33,7 +33,6 @@ public class Menu extends JFrame {
             e.printStackTrace();
         }
 
-
     }
 
     {
