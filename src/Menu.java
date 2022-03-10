@@ -1,14 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Menu extends JFrame {
-    private JPanel panel1;
     private JPanel root;
+    private JPanel main_panel;
     private JPanel panel2;
-    private JButton button2;
-    private JButton button1;
 
 
     public Menu() {
@@ -17,23 +13,9 @@ public class Menu extends JFrame {
         setVisible(true);
         root.setVisible(true);
         setSize(400, 400);
-        panel1.setVisible(true);
+        main_panel.setVisible(true);
         panel2.setVisible(false);
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panel1.setVisible(false);
-                panel2.setVisible(true);
 
-            }
-        });
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                panel1.setVisible(true);
-                panel2.setVisible(false);
-            }
-        });
       /*  try {
             PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM halle");
             ResultSet result = ps.executeQuery();
@@ -64,12 +46,12 @@ public class Menu extends JFrame {
     private void $$$setupUI$$$() {
         root = new JPanel();
         root.setLayout(new CardLayout(0, 0));
-        panel1 = new JPanel();
-        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        root.add(panel1, "Card1");
+        main_panel = new JPanel();
+        main_panel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        root.add(main_panel, "Card1");
         button1 = new JButton();
         button1.setText("Button1");
-        panel1.add(button1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        main_panel.add(button1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel2 = new JPanel();
         panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         root.add(panel2, "Card2");

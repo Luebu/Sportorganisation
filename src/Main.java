@@ -23,6 +23,7 @@ public class Main {
         initialzeLogger();
         Menu menu = new Menu();
 
+        /*
         try {
             PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM halle");
             ResultSet result = ps.executeQuery();
@@ -31,6 +32,7 @@ public class Main {
         }catch(SQLException e){
             e.printStackTrace();
         }
+        */
 
 
         }
