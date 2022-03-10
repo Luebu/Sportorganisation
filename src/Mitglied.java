@@ -1,3 +1,4 @@
+import Databse.Connector;
 public class Mitglied {
     private String name;
     private int alter;
