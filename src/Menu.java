@@ -3,9 +3,15 @@ import java.awt.*;
 
 public class Menu extends JFrame {
     private JPanel root;
-    private JPanel Startfolie;
-    private JButton button1;
-    private JButton button2;
+    private JPanel startfolie;
+    private JButton startfolie_anmelden;
+    private JButton startfolie_registrieren;
+    private JPanel anmelden;
+    private JTextField anmelden_benutzername;
+    private JPasswordField anmelden_passwort;
+    private JButton anmelden_zurück;
+    private JButton anmelden_abbrechen;
+    private JButton anmelden_weiter;
     private JPanel panel2;
 
 
@@ -15,7 +21,7 @@ public class Menu extends JFrame {
         setVisible(true);
         root.setVisible(true);
         setSize(400, 400);
-        Startfolie.setVisible(true);
+        startfolie.setVisible(true);
         panel2.setVisible(false);
 
       /*  try {
@@ -48,12 +54,12 @@ public class Menu extends JFrame {
     private void $$$setupUI$$$() {
         root = new JPanel();
         root.setLayout(new CardLayout(0, 0));
-        Startfolie = new JPanel();
-        Startfolie.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-        root.add(Startfolie, "Card1");
+        startfolie = new JPanel();
+        startfolie.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        root.add(startfolie, "Card1");
         registrierenButton = new JButton();
         registrierenButton.setText("Button1");
-        Startfolie.add(registrierenButton, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        startfolie.add(registrierenButton, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         panel2 = new JPanel();
         panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         root.add(panel2, "Card2");
