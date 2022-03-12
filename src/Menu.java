@@ -12,6 +12,24 @@ public class Menu extends JFrame {
     private JButton anmelden_zurück;
     private JButton anmelden_abbrechen;
     private JButton anmelden_weiter;
+    private JPanel registrieren1;
+    private JButton registrieren1_zurueck;
+    private JButton registrieren1_abbrechen;
+    private JButton registrieren_weiter;
+    private JLabel registrieren_aufforderung;
+    private JTextField textField1;
+    private JPanel registrieren2;
+    private JPasswordField passwordField1;
+    private JPasswordField passwordField2;
+    private JButton registrieren2_zurueck;
+    private JButton registrieren2_abbrechen;
+    private JButton registrieren2_weiter;
+    private JPanel Navigation;
+    private JLabel navi_menu;
+    private JButton zurückButton;
+    private JButton abmeldenButton;
+    private JButton button3;
+    private JButton button1;
     private JPanel panel2;
 
 
