@@ -40,7 +40,6 @@ public class Menu extends JFrame {
     private JButton buchen1_abmelden;
     private JButton buchen1_weiter;
     private JLabel buchen1_liste;
-    private JPanel buchen2;
     private JPanel buchen0;
     private JButton buchen0_zurueck;
     private JButton buchen0_abmelden;
@@ -52,6 +51,9 @@ public class Menu extends JFrame {
     private JCheckBox buchen0_tischtennis;
     private JCheckBox buchen0_hockey;
     private JTextField buchen0_datum;
+    private JPanel bestätigung_buchung;
+    private JPanel bestätigung_registrieren;
+    private JPanel Abmelden;
     private JPanel panel2;
 
 
