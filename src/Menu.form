@@ -236,7 +236,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="9b658" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+                  <component id="9b658" class="javax.swing.JTextField" binding="registrieren1_Benutzer">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -303,7 +303,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="fd1d7" class="javax.swing.JButton" binding="registrieren_weiter">
+                  <component id="fd1d7" class="javax.swing.JButton" binding="registrieren1_weiter">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -404,7 +404,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a41b" class="javax.swing.JPasswordField" binding="passwordField1" default-binding="true">
+                  <component id="a41b" class="javax.swing.JPasswordField" binding="registrieren_eingabe">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="2" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -412,7 +412,7 @@
                     </constraints>
                     <properties/>
                   </component>
-                  <component id="d27a6" class="javax.swing.JPasswordField" binding="passwordField2" default-binding="true">
+                  <component id="d27a6" class="javax.swing.JPasswordField" binding="registrieren_bestaetigen">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="10" fill="1" indent="0" use-parent-layout="false">
                         <preferred-size width="150" height="-1"/>
@@ -515,7 +515,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="e20e0" class="javax.swing.JButton" binding="button3" default-binding="true">
+                  <component id="e20e0" class="javax.swing.JButton" binding="navi_uebersicht">
                     <constraints>
                       <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -523,7 +523,7 @@
                       <text value="Button"/>
                     </properties>
                   </component>
-                  <component id="f9cb4" class="javax.swing.JLabel">
+                  <component id="f9cb4" class="javax.swing.JLabel" binding="navi_rang">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -531,7 +531,7 @@
                       <text value="Label"/>
                     </properties>
                   </component>
-                  <component id="3fbb" class="javax.swing.JLabel">
+                  <component id="3fbb" class="javax.swing.JLabel" binding="navi_user">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -549,7 +549,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="845d4" class="javax.swing.JButton" binding="button1" default-binding="true">
+                  <component id="845d4" class="javax.swing.JButton" binding="navi_buchen">
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -567,7 +567,7 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="98258" class="javax.swing.JButton" binding="zurückButton" default-binding="true">
+                  <component id="98258" class="javax.swing.JButton" binding="navi_zurueck">
                     <constraints>
                       <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -575,7 +575,7 @@
                       <text value="Zurück"/>
                     </properties>
                   </component>
-                  <component id="5c965" class="javax.swing.JButton" binding="abmeldenButton" default-binding="true">
+                  <component id="5c965" class="javax.swing.JButton" binding="navi_abmelden">
                     <constraints>
                       <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
@@ -590,6 +590,158 @@
                     <properties>
                       <text value="Halle buchen:"/>
                     </properties>
+                  </component>
+                </children>
+              </grid>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="821d3" binding="Überischt" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <card name="Card6"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="dd03c" class="javax.swing.JLabel">
+            <constraints border-constraint="North"/>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Ihre Buchungen"/>
+            </properties>
+          </component>
+          <grid id="543d" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="a4bbf" class="javax.swing.JButton" binding="uebersicht_zurueck">
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Zurück"/>
+                </properties>
+              </component>
+              <hspacer id="78a13">
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </hspacer>
+              <vspacer id="b2dca">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                </constraints>
+              </vspacer>
+              <component id="c66e9" class="javax.swing.JLabel" binding="uebersicht_liste">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <grid id="113ea" binding="Buchen1" layout-manager="BorderLayout" hgap="0" vgap="0">
+        <constraints>
+          <card name="Card7"/>
+        </constraints>
+        <properties/>
+        <border type="none"/>
+        <children>
+          <component id="85888" class="javax.swing.JLabel">
+            <constraints border-constraint="North"/>
+            <properties>
+              <horizontalAlignment value="0"/>
+              <text value="Buchung"/>
+            </properties>
+          </component>
+          <grid id="7342c" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints border-constraint="Center"/>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <grid id="ac637" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3498c" class="javax.swing.JLabel" binding="buchen1_liste">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value=""/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="246e7" layout-manager="GridLayoutManager" row-count="2" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="3f3cc" class="javax.swing.JButton" binding="buchen1_zurueck">
+                    <constraints>
+                      <grid row="0" column="0" row-span="2" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Zurück"/>
+                    </properties>
+                  </component>
+                  <component id="a5ead" class="javax.swing.JButton" binding="buchen1_abmelden">
+                    <constraints>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="10" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Abmelden"/>
+                    </properties>
+                  </component>
+                  <component id="8818" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Ihre Hallennr.:"/>
+                    </properties>
+                  </component>
+                </children>
+              </grid>
+              <grid id="59efe" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="ddf77" class="javax.swing.JButton" binding="buchen1_weiter">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="6" fill="0" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <text value="Weiter"/>
+                    </properties>
+                  </component>
+                  <component id="12695" class="javax.swing.JTextField" binding="buchen1_hallennummer">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                        <preferred-size width="150" height="-1"/>
+                      </grid>
+                    </constraints>
+                    <properties/>
                   </component>
                 </children>
               </grid>
