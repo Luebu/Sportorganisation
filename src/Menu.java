@@ -24,7 +24,7 @@ public class Menu extends JFrame {
     private JButton registrieren2_zurueck;
     private JButton registrieren2_abbrechen;
     private JButton registrieren2_weiter;
-    private JPanel Navigation;
+    private JPanel navigation;
     private JLabel navi_menu;
     private JButton navi_zurueck;
     private JButton navi_abmelden;
@@ -32,14 +32,26 @@ public class Menu extends JFrame {
     private JButton navi_buchen;
     private JLabel navi_rang;
     private JLabel navi_user;
-    private JPanel Überischt;
+    private JPanel ueberischt;
     private JButton uebersicht_zurueck;
     private JLabel uebersicht_liste;
-    private JPanel Buchen1;
+    private JPanel buchen1;
     private JButton buchen1_zurueck;
     private JButton buchen1_abmelden;
     private JButton buchen1_weiter;
     private JLabel buchen1_liste;
+    private JPanel buchen2;
+    private JPanel buchen0;
+    private JButton buchen0_zurueck;
+    private JButton buchen0_abmelden;
+    private JButton buchen0_weiter;
+    private JCheckBox buchen0_fussball;
+    private JCheckBox buchen0_basketball;
+    private JCheckBox buchen0_handball;
+    private JCheckBox buchen0_tennis;
+    private JCheckBox buchen0_tischtennis;
+    private JCheckBox buchen0_hockey;
+    private JTextField buchen0_datum;
     private JPanel panel2;
 
 
