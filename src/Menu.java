@@ -1,6 +1,7 @@
 import Databse.Connector;
 
 import javax.swing.*;
+import java.util.Date;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,7 +35,6 @@ public class Menu extends JFrame {
     private JButton registrieren2_weiter;
     private JPanel navigation;
     private JLabel navi_menu;
-    private JButton navi_zurueck;
     private JButton navi_abmelden;
     private JButton navi_uebersicht;
     private JButton navi_buchen;
@@ -63,9 +63,10 @@ public class Menu extends JFrame {
     private JPanel bestaetigung_registrieren;
     private JPanel abmelden;
     private JTextField registrieren1_trainercode;
+    private JLabel fehler_label;
+    private JPanel fehlermeldung;
 
-
-    public Menu() {
+    public Menu() throws InterruptedException {
         super();
         add(root);
         setVisible(true);
@@ -123,45 +124,6 @@ public class Menu extends JFrame {
         });
 
 
-        anmelden_weiter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //prüfen ob nutzername vorhanden ist
-                //prüfen ob das Passwort übereinstimmt
-                //wenn alles passt weitergehen
-                ResultSet result1;
-                ResultSet result2;
-                try {
-                    if (anmelden_benutzername != null) {
-                        PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + anmelden_benutzername.getText() + "'");
-                        result1 = ps.executeQuery();
-                       // if (result1 != null) {
-                            result1.next();
-                            PreparedStatement ps1 = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + result1.getString(4) + "'");
-                            result2 = ps1.executeQuery();
-                            result2.next();
-                            if (anmelden_benutzername.getText().equals(result1.getString(4)) && anmelden_passwort.getText().equals(result2.getString(5))) {
-                                anmelden.setVisible(false);
-                                navigation.setVisible(true);
-                            } else {
-                                //Fehlermeldung
-
-                            }
-                        /*} else {
-                            //fehlermeldung
-                        }*/
-                    } else {
-                        //Fehlermeldung
-                    }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
-
-
-            }
-        });
-
-
         registrieren1_zurueck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -173,29 +135,17 @@ public class Menu extends JFrame {
         registrieren1_abbrechen.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registrieren1.setVisible(false);
-                abmelden.setVisible(true);
+
                 try {
-                    Thread.sleep(10000);
+                    registrieren1.setVisible(false);
+                    abmelden.setVisible(true);
+                    wait(10000);
+                    abmelden.setVisible(false);
+                    startfolie.setVisible(true);
                 } catch (InterruptedException pE) {
                     pE.printStackTrace();
                 }
-                abmelden.setVisible(false);
-                startfolie.setVisible(true);
-            }
-        });
 
-        /*registrieren1_weiter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Prüfen ob Textfeld registrieren1_Benutzer ausgefüllt ist
-                //prüfen ob der Benutzername frei ist
-                if( && ){
-                    registrieren1.setVisible(false);
-                    registrieren2.setVisible(true);
-                }else{
-
-                }
             }
         });
 
@@ -204,9 +154,8 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 registrieren2.setVisible(false);
                 registrieren1.setVisible(true);
-             }
+            }
         });
-
 
         registrieren2_abbrechen.addActionListener(new ActionListener() {
             @Override
@@ -220,42 +169,8 @@ public class Menu extends JFrame {
                 }
                 abmelden.setVisible(false);
                 startfolie.setVisible(true);
-             }
-        });
-
-
-        registrieren2_weiter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //Prüfen ob TF1 registrieren_eingabe & TF2 registrieren_bestaetigen beschriftet sind
-                //Prüfen ob diese gleich sind
-                //eventuelle prüfung der Länge: 8-16 Zeichen
-                if(registrieren_eingabe != null && registrieren_bestaetigen != null && registrieren_eingabe == registrieren_bestaetigen){
-                    registrieren2.setVisible(false);
-                    bestaetigung_registrieren.setVisible(true);
-                    try {
-                        Thread.sleep(10000);
-                    } catch (InterruptedException pE) {
-                        pE.printStackTrace();
-                    }
-                    bestaetigung_registrieren.setVisible(false);
-                    navigation.setVisible(true);
-
-                }else{
-                    //Fehlermeldung
-
-                }
-             }
-        });
-
-        navi_zurueck.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
             }
         });
-
-
 
         navi_abmelden.addActionListener(new ActionListener() {
             @Override
@@ -272,7 +187,6 @@ public class Menu extends JFrame {
             }
         });
 
-
         navi_uebersicht.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -281,10 +195,10 @@ public class Menu extends JFrame {
             }
         });
 
-
         navi_buchen.addActionListener(new ActionListener() {
             @Override
-            //prüfen ob Trainer ist: public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {
+                //prüfen ob Trainer ist: public void actionPerformed(ActionEvent e) {
                 navigation.setVisible(false);
                 buchen0.setVisible(true);
             }
@@ -298,7 +212,6 @@ public class Menu extends JFrame {
             }
         });
 
-
         buchen0_zurueck.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -306,8 +219,6 @@ public class Menu extends JFrame {
                 navigation.setVisible(true);
             }
         });
-
-
 
         buchen0_abmelden.addActionListener(new ActionListener() {
             @Override
@@ -325,6 +236,83 @@ public class Menu extends JFrame {
         });
 
 
+        anmelden_weiter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //prüfen ob nutzername vorhanden ist
+                //prüfen ob das Passwort übereinstimmt
+                //wenn alles passt weitergehen
+                ResultSet result1;
+                ResultSet result2;
+                try {
+                    if (anmelden_benutzername != null) {
+                        PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + anmelden_benutzername.getText() + "'");
+                        result1 = ps.executeQuery();
+                        // if (result1 != null) {
+                        result1.next();
+                        PreparedStatement ps1 = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + result1.getString(4) + "'");
+                        result2 = ps1.executeQuery();
+                        result2.next();
+                        if (anmelden_benutzername.getText().equals(result1.getString(4)) && anmelden_passwort.getText().equals(result2.getString(5))) {
+                            anmelden.setVisible(false);
+                            navigation.setVisible(true);
+                        } else {
+                            anmelden.setVisible(false);
+                            fehler_label.setText("Benutzername oder Passwort ist falsch");
+                            fehlermeldung.setVisible(true);
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException pE) {
+                                pE.printStackTrace();
+                            }
+                            fehlermeldung.setVisible(false);
+                            anmelden.setVisible(true);
+                        }
+                        /*} else {
+                           anmelden.setVisible(false);
+                            fehler_label.setText("Benutzername oder Passwort ist falsch");
+                            fehlermeldung.setVisible(true);
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException pE) {
+                                pE.printStackTrace();
+                            }
+                            fehlermeldung.setVisible(false);
+                            anmelden.setVisible(true);
+                        }*/
+                    } else {
+                        anmelden.setVisible(false);
+                        fehler_label.setText("Benutzername oder Passwort ist falsch");
+                        fehlermeldung.setVisible(true);
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException pE) {
+                            pE.printStackTrace();
+                        }
+                        fehlermeldung.setVisible(false);
+                        anmelden.setVisible(true);
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
+
+
+            }
+        });
+
+        /*registrieren1_weiter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Prüfen ob Textfeld registrieren1_Benutzer ausgefüllt ist
+                //prüfen ob der Benutzername frei ist
+                if( && ){
+                    registrieren1.setVisible(false);
+                    registrieren2.setVisible(true);
+                }else{
+
+                }
+            }
+        });
 
         buchen0_weiter.addActionListener(new ActionListener() {
             @Override
@@ -339,7 +327,7 @@ public class Menu extends JFrame {
                 }
 
             }
-        });
+        });*/
 
 
 
@@ -358,6 +346,7 @@ public class Menu extends JFrame {
         }*/
 
     }
+
 
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
@@ -752,6 +741,20 @@ public class Menu extends JFrame {
         final JLabel label30 = new JLabel();
         label30.setText("Beehren Sie uns doch bald wieder!");
         panel36.add(label30, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        fehlermeldung = new JPanel();
+        fehlermeldung.setLayout(new BorderLayout(0, 0));
+        root.add(fehlermeldung, "Card12");
+        final JLabel label31 = new JLabel();
+        label31.setHorizontalAlignment(0);
+        label31.setHorizontalTextPosition(0);
+        label31.setText("Fehlermeldung");
+        fehlermeldung.add(label31, BorderLayout.NORTH);
+        final JPanel panel37 = new JPanel();
+        panel37.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+        fehlermeldung.add(panel37, BorderLayout.CENTER);
+        fehler_label = new JLabel();
+        fehler_label.setText("");
+        panel37.add(fehler_label, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

@@ -1,7 +1,6 @@
 
 import Databse.Connector;
-import eu.cr4zyfl1x.logger.LogType;
-import eu.cr4zyfl1x.logger.Logger;
+
 import org.sqlite.JDBC;
 
 import javax.swing.*;
@@ -11,14 +10,14 @@ import java.util.Date;
 
 public class Main {
 
-    public static void main(String[] args){
+    public static void main(String[] args)throws InterruptedException{
         try {
             DriverManager.registerDriver(new JDBC());
         }catch(SQLException e){
 
         }
         Connector.connect();
-        initialzeLogger();
+
         Menu menu = new Menu();
 
         /*
@@ -34,9 +33,5 @@ public class Main {
 
 
         }
-    private static void initialzeLogger(){
-        Logger logger = new Logger("Sportorga", new Date(),"logs");
-        logger.load();
-        Logger.log(LogType.SYSTEM,"Initialized");
-    }
+
 }
