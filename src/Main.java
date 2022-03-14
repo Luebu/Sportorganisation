@@ -13,12 +13,10 @@ public class Main {
 
     public static void main(String[] args){
         try {
-
             DriverManager.registerDriver(new JDBC());
         }catch(SQLException e){
 
         }
-        System.out.println("HhhhEyy");
         Connector.connect();
         initialzeLogger();
         Menu menu = new Menu();
