@@ -191,6 +191,18 @@ public class Menu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 navigation.setVisible(false);
+                //Übersicht der Buchungen ins Label uebersicht_liste reinmachen
+                // uebersicht_liste
+                try {
+                    PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM halle JOIN mitglied m on halle.vereinID = m.vereinID");
+                    ResultSet result = ps.executeQuery();
+                    while (result.next()) {
+                        uebersicht_liste.setText(uebersicht_liste.getText() + result.getString(2) + ", ");
+                    }
+
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
                 ueberischt.setVisible(true);
             }
         });
