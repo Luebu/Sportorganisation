@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 
 public class Menu extends JFrame {
     private JPanel root;
@@ -317,6 +318,7 @@ public class Menu extends JFrame {
                             result2.next();
                             if (anmelden_benutzername.getText().equals(result1.getString(4)) && anmelden_passwort.getText().equals(result2.getString(5))) {
                                 aktID = result2.getInt(1);
+                                navi_user.setText(result1.getString(3) + ", " + result1.getString(2));
                                 anmelden.setVisible(false);
                                 navigation.setVisible(true);
                             } else {
