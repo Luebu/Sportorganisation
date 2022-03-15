@@ -38,7 +38,6 @@ public class Menu extends JFrame {
     private JButton navi_abmelden;
     private JButton navi_uebersicht;
     private JButton navi_buchen;
-    private JLabel navi_rang;
     private JLabel navi_user;
     private JPanel ueberischt;
     private JButton uebersicht_zurueck;
@@ -62,8 +61,8 @@ public class Menu extends JFrame {
     private JLabel fehler_label;
     private JPanel fehlermeldung;
     private JTextPane uebersicht_liste;
-    private JTextField textField1;
-    private JTextField textField2;
+    private JTextField registrieren1_vorname;
+    private JTextField registrieren1_nachname;
     private JTextPane buchen1_liste;
     private JSlider buchen1_slider;
     private JLabel buchen1_slotselect;
@@ -71,7 +70,10 @@ public class Menu extends JFrame {
 
     private int aktID;
     private String wochentag;
-    private int temp;
+    private String username;
+    private String forename;
+    private String surname;
+    int counter = 0;
 
     public Menu() throws InterruptedException {
         super();
@@ -211,6 +213,7 @@ public class Menu extends JFrame {
                 navigation.setVisible(false);
                 //Übersicht der Buchungen ins Label uebersicht_liste reinmachen
                 // uebersicht_liste
+                uebersicht_liste.setText("");
                 try {
                     PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM buchungen WHERE trainer =" + aktID);
                     ResultSet result = ps.executeQuery();
@@ -373,27 +376,91 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 //Prüfen ob Textfeld registrieren1_Benutzer ausgefüllt ist
                 //prüfen ob der Benutzername frei ist
+                try {
+                    if (registrieren1_Benutzer.getText() != null) {
+                        PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM mitglied WHERE username ='" + registrieren1_Benutzer.getText() + "'");
+                        ResultSet result = ps.executeQuery();
+                        if (!result.next()) {
+                            username = registrieren1_Benutzer.getText();
+                            forename = registrieren1_vorname.getText();
+                            surname = registrieren1_nachname.getText();
+                            registrieren1.setVisible(false);
+                            registrieren2.setVisible(true);
+                        }
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
 
+            }
+        });
 
+        registrieren2_weiter.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!(registrieren_eingabe.getText().equals(null) && registrieren_bestaetigen.getText().equals(null))) {
+                    if (registrieren_eingabe.getText().equals(registrieren_bestaetigen.getText())) {
+                        //Erstellen des Mitglieds
+                        try {
+                            PreparedStatement ps = Connector.getConn().prepareStatement("INSERT INTO mitglied (vorname, nachname, username, password) VALUES ('" + forename + "','" + surname + "','" + username + "','" + registrieren_bestaetigen.getText() + "')");
+                            ps.execute();
+
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                        }
+
+                        registrieren2.setVisible(false);
+                        anmelden.setVisible(true);
+                    } else {
+                        registrieren2.setVisible(false);
+                        fehler_label.setText("Passwörter stimmen nicht Überein");
+                        fehlermeldung.setVisible(true);
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException pE) {
+                                pE.printStackTrace();
+                            }
+                            fehlermeldung.setVisible(false);
+                            registrieren2.setVisible(true);
+                        }).start();
+                    }
+                } else {
+                    registrieren2.setVisible(false);
+                    fehler_label.setText("Passwörter stimmen nicht Überein1");
+                    fehlermeldung.setVisible(true);
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(5000);
+                        } catch (InterruptedException pE) {
+                            pE.printStackTrace();
+                        }
+                        fehlermeldung.setVisible(false);
+                        registrieren2.setVisible(true);
+                    }).start();
+                }
             }
         });
 
         buchen0_weiter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                counter = 0;
                 try {
                     PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM buchungen WHERE tag ='" + wochentag + "'AND trainer IS NULL");
                     ResultSet result = ps.executeQuery();
                     buchen1_liste.setText("Freie Termine am " + wochentag + ": \n");
                     while (result.next()) {
-                        buchen1_liste.setText(buchen1_liste.getText() + "Tag: " + result.getString(2) + " | Von: " + result.getInt(3) + " | Bis: " + result.getInt(4) + ",\n");
+                        counter++;
+                        buchen1_liste.setText(buchen1_liste.getText() + "Slot:" + counter + " ||" + "Tag: " + result.getString(2) + " | Von: " + result.getInt(3) + " | Bis: " + result.getInt(4) + ",\n");
                     }
                     buchen0.setVisible(false);
                     buchen1.setVisible(true);
-
+                    buchen1_slider.setMaximum(counter);
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
+
             }
 
 
@@ -402,9 +469,18 @@ public class Menu extends JFrame {
         buchen1_weiter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    PreparedStatement ps = Connector.getConn().prepareStatement("UPDATE buchungen SET trainer = " + aktID + " WHERE tag='" + wochentag + "' AND trainer IS NULL AND ROWID ='" + buchen1_slider.getValue() + "'");
+                    ps.execute();
+                    buchen1.setVisible(false);
+                    navigation.setVisible(true);
 
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
+
         buchen1_slider.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -421,7 +497,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Montag";
-                temp = 0;
+
             }
         });
         buchen0_dienstag.addActionListener(new ActionListener() {
@@ -433,7 +509,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Dienstag";
-                temp = 1;
+
             }
         });
         buchen0_mittwoch.addActionListener(new ActionListener() {
@@ -445,7 +521,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Mittwoch";
-                temp = 2;
+
             }
         });
         buchen0_donnerstag.addActionListener(new ActionListener() {
@@ -457,7 +533,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Donnerstag";
-                temp = 3;
+
             }
         });
         buchen0_freitag.addActionListener(new ActionListener() {
@@ -470,7 +546,7 @@ public class Menu extends JFrame {
                 buchen0_montag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Freitag";
-                temp = 4;
+
             }
         });
         buchen0_samstag.addActionListener(new ActionListener() {
@@ -482,7 +558,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_montag.setSelected(false);
                 wochentag = "Samstag";
-                temp = 5;
+
             }
         });
 
@@ -602,10 +678,10 @@ public class Menu extends JFrame {
         panel9.add(panel10, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         registrieren1_Benutzer = new JTextField();
         panel10.add(registrieren1_Benutzer, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        textField1 = new JTextField();
-        panel10.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        textField2 = new JTextField();
-        panel10.add(textField2, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        registrieren1_vorname = new JTextField();
+        panel10.add(registrieren1_vorname, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        registrieren1_nachname = new JTextField();
+        panel10.add(registrieren1_nachname, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         final JPanel panel11 = new JPanel();
         panel11.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel9.add(panel11, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -694,26 +770,20 @@ public class Menu extends JFrame {
         panel19.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         navigation.add(panel19, BorderLayout.CENTER);
         final JPanel panel20 = new JPanel();
-        panel20.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel20.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel19.add(panel20, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label13 = new JLabel();
         label13.setText("Angemeldet als:");
         panel20.add(label13, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label14 = new JLabel();
-        label14.setText("Ihr Rang:");
-        panel20.add(label14, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label15 = new JLabel();
-        label15.setText("Übersicht über ihre Buchungen:");
-        panel20.add(label15, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label14.setText("Übersicht über ihre Buchungen:");
+        panel20.add(label14, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel21 = new JPanel();
-        panel21.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel21.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel19.add(panel21, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         navi_uebersicht = new JButton();
         navi_uebersicht.setText("Button");
-        panel21.add(navi_uebersicht, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        navi_rang = new JLabel();
-        navi_rang.setText("Label");
-        panel21.add(navi_rang, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel21.add(navi_uebersicht, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         navi_user = new JLabel();
         navi_user.setText("Label");
         panel21.add(navi_user, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -729,16 +799,16 @@ public class Menu extends JFrame {
         navi_abmelden = new JButton();
         navi_abmelden.setText("Abmelden");
         panel23.add(navi_abmelden, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label16 = new JLabel();
-        label16.setText("Halle buchen:");
-        panel23.add(label16, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label15 = new JLabel();
+        label15.setText("Halle buchen:");
+        panel23.add(label15, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ueberischt = new JPanel();
         ueberischt.setLayout(new BorderLayout(0, 0));
         root.add(ueberischt, "Card6");
-        final JLabel label17 = new JLabel();
-        label17.setHorizontalAlignment(0);
-        label17.setText("Ihre Buchungen");
-        ueberischt.add(label17, BorderLayout.NORTH);
+        final JLabel label16 = new JLabel();
+        label16.setHorizontalAlignment(0);
+        label16.setText("Ihre Buchungen");
+        ueberischt.add(label16, BorderLayout.NORTH);
         final JPanel panel24 = new JPanel();
         panel24.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         ueberischt.add(panel24, BorderLayout.CENTER);
@@ -754,10 +824,10 @@ public class Menu extends JFrame {
         buchen1 = new JPanel();
         buchen1.setLayout(new BorderLayout(0, 0));
         root.add(buchen1, "Card7");
-        final JLabel label18 = new JLabel();
-        label18.setHorizontalAlignment(0);
-        label18.setText("Buchung");
-        buchen1.add(label18, BorderLayout.NORTH);
+        final JLabel label17 = new JLabel();
+        label17.setHorizontalAlignment(0);
+        label17.setText("Buchung");
+        buchen1.add(label17, BorderLayout.NORTH);
         final JPanel panel25 = new JPanel();
         panel25.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         buchen1.add(panel25, BorderLayout.CENTER);
@@ -775,9 +845,9 @@ public class Menu extends JFrame {
         buchen1_abmelden = new JButton();
         buchen1_abmelden.setText("Abmelden");
         panel27.add(buchen1_abmelden, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label19 = new JLabel();
-        label19.setText("Ihr Slot");
-        panel27.add(label19, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label18 = new JLabel();
+        label18.setText("Ihr Slot");
+        panel27.add(label18, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel28 = new JPanel();
         panel28.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel25.add(panel28, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -787,17 +857,18 @@ public class Menu extends JFrame {
         buchen1_slider = new JSlider();
         buchen1_slider.setMaximum(5);
         buchen1_slider.setMinimum(1);
+        buchen1_slider.setValue(1);
         panel28.add(buchen1_slider, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buchen1_slotselect = new JLabel();
-        buchen1_slotselect.setText("Label");
+        buchen1_slotselect.setText("1");
         panel28.add(buchen1_slotselect, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buchen0 = new JPanel();
         buchen0.setLayout(new BorderLayout(0, 0));
         root.add(buchen0, "Card9");
-        final JLabel label20 = new JLabel();
-        label20.setHorizontalAlignment(0);
-        label20.setText("Buchung");
-        buchen0.add(label20, BorderLayout.NORTH);
+        final JLabel label19 = new JLabel();
+        label19.setHorizontalAlignment(0);
+        label19.setText("Buchung");
+        buchen0.add(label19, BorderLayout.NORTH);
         final JPanel panel29 = new JPanel();
         panel29.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
         buchen0.add(panel29, BorderLayout.CENTER);
@@ -840,65 +911,65 @@ public class Menu extends JFrame {
         buchen0_mittwoch = new JCheckBox();
         buchen0_mittwoch.setText("Mittwoch");
         panel33.add(buchen0_mittwoch, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label21 = new JLabel();
-        label21.setText("Bitte Tag auswählen");
-        panel33.add(label21, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label20 = new JLabel();
+        label20.setText("Bitte Tag auswählen");
+        panel33.add(label20, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bestaetigung_buchung = new JPanel();
         bestaetigung_buchung.setLayout(new BorderLayout(0, 0));
         root.add(bestaetigung_buchung, "Card8");
-        final JLabel label22 = new JLabel();
-        label22.setHorizontalAlignment(0);
-        label22.setText("Bestätigung");
-        bestaetigung_buchung.add(label22, BorderLayout.NORTH);
+        final JLabel label21 = new JLabel();
+        label21.setHorizontalAlignment(0);
+        label21.setText("Bestätigung");
+        bestaetigung_buchung.add(label21, BorderLayout.NORTH);
         final JPanel panel34 = new JPanel();
         panel34.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         bestaetigung_buchung.add(panel34, BorderLayout.CENTER);
+        final JLabel label22 = new JLabel();
+        label22.setText("Glückwunsch, Ihre Buchung war erfolgreich");
+        panel34.add(label22, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label23 = new JLabel();
-        label23.setText("Glückwunsch, Ihre Buchung war erfolgreich");
-        panel34.add(label23, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label24 = new JLabel();
-        label24.setText("Sie werden nun zurück zum Menü geführt");
-        panel34.add(label24, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label23.setText("Sie werden nun zurück zum Menü geführt");
+        panel34.add(label23, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         bestaetigung_registrieren = new JPanel();
         bestaetigung_registrieren.setLayout(new BorderLayout(0, 0));
         root.add(bestaetigung_registrieren, "Card10");
-        final JLabel label25 = new JLabel();
-        label25.setHorizontalAlignment(0);
-        label25.setText("Bestätigung");
-        bestaetigung_registrieren.add(label25, BorderLayout.NORTH);
+        final JLabel label24 = new JLabel();
+        label24.setHorizontalAlignment(0);
+        label24.setText("Bestätigung");
+        bestaetigung_registrieren.add(label24, BorderLayout.NORTH);
         final JPanel panel35 = new JPanel();
         panel35.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         bestaetigung_registrieren.add(panel35, BorderLayout.CENTER);
+        final JLabel label25 = new JLabel();
+        label25.setText("Glückwunsch, sie haben sich erfolgreich registriert");
+        panel35.add(label25, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label26 = new JLabel();
-        label26.setText("Glückwunsch, sie haben sich erfolgreich registriert");
-        panel35.add(label26, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label27 = new JLabel();
-        label27.setText("Wir navigieren Sie nun zum Menü");
-        panel35.add(label27, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label26.setText("Wir navigieren Sie nun zum Menü");
+        panel35.add(label26, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         abmelden = new JPanel();
         abmelden.setLayout(new BorderLayout(0, 0));
         root.add(abmelden, "Card11");
-        final JLabel label28 = new JLabel();
-        label28.setHorizontalAlignment(0);
-        label28.setText("Abmelden");
-        abmelden.add(label28, BorderLayout.NORTH);
+        final JLabel label27 = new JLabel();
+        label27.setHorizontalAlignment(0);
+        label27.setText("Abmelden");
+        abmelden.add(label27, BorderLayout.NORTH);
         final JPanel panel36 = new JPanel();
         panel36.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         abmelden.add(panel36, BorderLayout.CENTER);
+        final JLabel label28 = new JLabel();
+        label28.setText("Vielen Dank, dass Sie sich für die MERLM Hallenvermietung entschieden haben.");
+        panel36.add(label28, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label29 = new JLabel();
-        label29.setText("Vielen Dank, dass Sie sich für die MERLM Hallenvermietung entschieden haben.");
-        panel36.add(label29, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label30 = new JLabel();
-        label30.setText("Beehren Sie uns doch bald wieder!");
-        panel36.add(label30, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label29.setText("Beehren Sie uns doch bald wieder!");
+        panel36.add(label29, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTH, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         fehlermeldung = new JPanel();
         fehlermeldung.setLayout(new BorderLayout(0, 0));
         root.add(fehlermeldung, "Card12");
-        final JLabel label31 = new JLabel();
-        label31.setHorizontalAlignment(0);
-        label31.setHorizontalTextPosition(0);
-        label31.setText("Fehlermeldung");
-        fehlermeldung.add(label31, BorderLayout.NORTH);
+        final JLabel label30 = new JLabel();
+        label30.setHorizontalAlignment(0);
+        label30.setHorizontalTextPosition(0);
+        label30.setText("Fehlermeldung");
+        fehlermeldung.add(label30, BorderLayout.NORTH);
         final JPanel panel37 = new JPanel();
         panel37.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         fehlermeldung.add(panel37, BorderLayout.CENTER);
