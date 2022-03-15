@@ -113,13 +113,15 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 anmelden.setVisible(false);
                 abmelden.setVisible(true);
-                try {
-                    Thread.sleep(10000);
-                } catch (InterruptedException pE) {
-                    pE.printStackTrace();
-                }
-                abmelden.setVisible(false);
-                startfolie.setVisible(true);
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException pE) {
+                        pE.printStackTrace();
+                    }
+                    abmelden.setVisible(false);
+                    startfolie.setVisible(true);
+                }).start();
             }
         });
 
@@ -260,7 +262,7 @@ public class Menu extends JFrame {
                     if (anmelden_benutzername != null) {
                         PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + anmelden_benutzername.getText() + "'");
                         result1 = ps.executeQuery();
-                        // if (result1 != null) {
+                        if (result1.next()) {
                         result1.next();
                         PreparedStatement ps1 = Connector.getConn().prepareStatement("SELECT * From mitglied WHERE username ='" + result1.getString(4) + "'");
                         result2 = ps1.executeQuery();
@@ -272,37 +274,45 @@ public class Menu extends JFrame {
                             anmelden.setVisible(false);
                             fehler_label.setText("Benutzername oder Passwort ist falsch");
                             fehlermeldung.setVisible(true);
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException pE) {
-                                pE.printStackTrace();
-                            }
-                            fehlermeldung.setVisible(false);
-                            anmelden.setVisible(true);
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(5000);
+                                } catch (InterruptedException pE) {
+                                    pE.printStackTrace();
+                                }
+                                fehlermeldung.setVisible(false);
+                                anmelden.setVisible(true);
+                            }).start();
                         }
-                        /*} else {
+                        } else {
                            anmelden.setVisible(false);
                             fehler_label.setText("Benutzername oder Passwort ist falsch");
                             fehlermeldung.setVisible(true);
-                            try {
-                                Thread.sleep(5000);
-                            } catch (InterruptedException pE) {
-                                pE.printStackTrace();
-                            }
-                            fehlermeldung.setVisible(false);
-                            anmelden.setVisible(true);
-                        }*/
+
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(5000);
+                                } catch (InterruptedException pE) {
+                                    pE.printStackTrace();
+                                }
+                                fehlermeldung.setVisible(false);
+                                anmelden.setVisible(true);
+                            }).start();
+
+                        }
                     } else {
                         anmelden.setVisible(false);
                         fehler_label.setText("Benutzername oder Passwort ist falsch");
                         fehlermeldung.setVisible(true);
-                        try {
-                            Thread.sleep(5000);
-                        } catch (InterruptedException pE) {
-                            pE.printStackTrace();
-                        }
-                        fehlermeldung.setVisible(false);
-                        anmelden.setVisible(true);
+                        new Thread(() -> {
+                            try {
+                                Thread.sleep(5000);
+                            } catch (InterruptedException pE) {
+                                pE.printStackTrace();
+                            }
+                            fehlermeldung.setVisible(false);
+                            anmelden.setVisible(true);
+                        }).start();
                     }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
@@ -580,17 +590,14 @@ public class Menu extends JFrame {
         navi_buchen.setText("Button");
         panel22.add(navi_buchen, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel23 = new JPanel();
-        panel23.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel23.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel19.add(panel23, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        navi_zurueck = new JButton();
-        navi_zurueck.setText("Zurück");
-        panel23.add(navi_zurueck, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         navi_abmelden = new JButton();
         navi_abmelden.setText("Abmelden");
-        panel23.add(navi_abmelden, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel23.add(navi_abmelden, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_SOUTHWEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label15 = new JLabel();
         label15.setText("Halle buchen:");
-        panel23.add(label15, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel23.add(label15, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_NORTHEAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         ueberischt = new JPanel();
         ueberischt.setLayout(new BorderLayout(0, 0));
         root.add(ueberischt, "Card6");
