@@ -75,6 +75,7 @@ public class Menu extends JFrame {
     private String forename;
     private String surname;
     int counter = 0;
+    int temp;
 
     public Menu() throws InterruptedException {
         super();
@@ -457,9 +458,9 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 counter = 0;
                 try {
-                    PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM buchungen WHERE tag ='" + wochentag + "'AND trainer IS NULL");
+                    PreparedStatement ps = Connector.getConn().prepareStatement("SELECT * FROM buchungen WHERE tag ='" + wochentag + "'");
                     ResultSet result = ps.executeQuery();
-                    buchen1_liste.setText("Freie Termine am " + wochentag + ": \n");
+                    buchen1_liste.setText("Termine am " + wochentag + ": \n");
                     while (result.next()) {
                         counter++;
                         buchen1_liste.setText(buchen1_liste.getText() + "Slot:" + counter + " ||" + "Tag: " + result.getString(2) + " | Von: " + result.getInt(3) + " | Bis: " + result.getInt(4) + ",\n");
@@ -479,6 +480,7 @@ public class Menu extends JFrame {
         buchen1_weiter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 try {
                     PreparedStatement ps = Connector.getConn().prepareStatement("UPDATE buchungen SET trainer = " + aktID + " WHERE tag='" + wochentag + "' AND trainer IS NULL AND ROWID ='" + buchen1_slider.getValue() + "'");
                     ps.execute();
@@ -507,7 +509,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Montag";
-
+                temp= 0;
             }
         });
         buchen0_dienstag.addActionListener(new ActionListener() {
@@ -519,7 +521,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Dienstag";
-
+                temp=6;
             }
         });
         buchen0_mittwoch.addActionListener(new ActionListener() {
@@ -531,7 +533,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Mittwoch";
-
+                temp=12;
             }
         });
         buchen0_donnerstag.addActionListener(new ActionListener() {
@@ -543,7 +545,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Donnerstag";
-
+                temp=18;
             }
         });
         buchen0_freitag.addActionListener(new ActionListener() {
@@ -556,7 +558,7 @@ public class Menu extends JFrame {
                 buchen0_montag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Freitag";
-
+                temp=24;
             }
         });
         buchen0_samstag.addActionListener(new ActionListener() {
@@ -568,7 +570,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_montag.setSelected(false);
                 wochentag = "Samstag";
-
+                temp=30;
             }
         });
 

@@ -750,6 +750,7 @@
                     <properties>
                       <maximum value="5"/>
                       <minimum value="1"/>
+                      <minorTickSpacing value="2"/>
                       <value value="1"/>
                     </properties>
                   </component>
