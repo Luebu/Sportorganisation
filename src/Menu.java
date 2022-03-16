@@ -100,6 +100,8 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 startfolie.setVisible(false);
                 anmelden.setVisible(true);
+                anmelden_benutzername.setText("");
+                anmelden_passwort.setText("");
             }
         });
 
@@ -108,6 +110,12 @@ public class Menu extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 startfolie.setVisible(false);
                 registrieren1.setVisible(true);
+                registrieren1_nachname.setText("");
+                registrieren1_vorname.setText("");
+                registrieren1_Benutzer.setText("");
+                registrieren_bestaetigen.setText("");
+                registrieren_eingabe.setText("");
+
             }
         });
 
