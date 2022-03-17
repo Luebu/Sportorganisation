@@ -509,7 +509,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Montag";
-                temp= 0;
+                temp = 0;
             }
         });
         buchen0_dienstag.addActionListener(new ActionListener() {
@@ -521,7 +521,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Dienstag";
-                temp=6;
+                temp = 6;
             }
         });
         buchen0_mittwoch.addActionListener(new ActionListener() {
@@ -533,7 +533,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Mittwoch";
-                temp=12;
+                temp = 12;
             }
         });
         buchen0_donnerstag.addActionListener(new ActionListener() {
@@ -545,7 +545,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Donnerstag";
-                temp=18;
+                temp = 18;
             }
         });
         buchen0_freitag.addActionListener(new ActionListener() {
@@ -558,7 +558,7 @@ public class Menu extends JFrame {
                 buchen0_montag.setSelected(false);
                 buchen0_samstag.setSelected(false);
                 wochentag = "Freitag";
-                temp=24;
+                temp = 24;
             }
         });
         buchen0_samstag.addActionListener(new ActionListener() {
@@ -570,7 +570,7 @@ public class Menu extends JFrame {
                 buchen0_freitag.setSelected(false);
                 buchen0_montag.setSelected(false);
                 wochentag = "Samstag";
-                temp=30;
+                temp = 30;
             }
         });
 
@@ -869,6 +869,7 @@ public class Menu extends JFrame {
         buchen1_slider = new JSlider();
         buchen1_slider.setMaximum(5);
         buchen1_slider.setMinimum(1);
+        buchen1_slider.setMinorTickSpacing(2);
         buchen1_slider.setValue(1);
         panel28.add(buchen1_slider, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         buchen1_slotselect = new JLabel();
